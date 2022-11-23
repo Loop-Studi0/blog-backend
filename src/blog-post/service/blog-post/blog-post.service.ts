@@ -40,6 +40,12 @@ export class BlogPostService {
   async getBlogById(id: number): Promise<Blogs> {
     return await this.blogsModel.findOne({ _id: id });
   }
+  async updateBlog(id: number, blogDto: blogsDto) {
+    const updatedBlog = await this.blogsModel.findByIdAndUpdate(id, blogDto, {
+      new: true,
+    });
+    return updatedBlog;
+  }
   async DeleteBlog(id: number) {
     const deleteBlog = await this.blogsModel.findById({ _id: id });
     if (!deleteBlog)
