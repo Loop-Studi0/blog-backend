@@ -19,8 +19,8 @@ export class BlogPostService {
       return blogToSave.save();
     }
   }
-  async getFilterOrder(filterOrderDTO: FilterBlogDto): Promise<Blogs[]> {
-    const { author, search } = filterOrderDTO;
+  async getFilterBlog(filterBlogDTO: FilterBlogDto): Promise<Blogs[]> {
+    const { author, search } = filterBlogDTO;
     let blogs = await this.getBlogs();
 
     if (search) {
@@ -40,11 +40,20 @@ export class BlogPostService {
   async getBlogById(id: number): Promise<Blogs> {
     return await this.blogsModel.findOne({ _id: id });
   }
+  async updateBlog(id: number, blogDto: blogsDto) {
+    const updatedBlog = await this.blogsModel.updateOne(
+      {
+        id: id,
+      },
+      blogDto,
+    );
+    return updatedBlog;
+  }
   async DeleteBlog(id: number) {
     const deleteBlog = await this.blogsModel.findById({ _id: id });
     if (!deleteBlog)
       return new HttpException(
-        'Blog with id have being trash',
+        'Post with id have being trash',
         HttpStatus.NOT_FOUND,
       );
     return this.blogsModel.deleteOne({ _id: id });
